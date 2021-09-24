@@ -1,0 +1,23 @@
+{
+  "name": "proshop",
+  "version": "1.0.0",
+  "description": "Mern shopping Cart",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MeGallin/theproshop.git"
+  },
+  "author": "Gary Allin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MeGallin/theproshop/issues"
+  },
+  "homepage": "https://github.com/MeGallin/theproshop#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
