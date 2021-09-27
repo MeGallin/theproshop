@@ -1,8 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import connectDB from './config/db.js';
 import products from './data/products.js';
 import cors from 'cors';
+import colors from 'colors';
 dotenv.config();
+connectDB();
 const app = express();
 
 app.use(cors());
@@ -23,5 +26,7 @@ const MODE = process.env.NODE_ENV;
 
 app.listen(
   PORT,
-  console.log(`Server running on port ${PORT} and running in ${MODE} mode.`),
+  console.log(
+    `Server running on port ${PORT} and running in ${MODE} mode.`.yellow.bold,
+  ),
 );
