@@ -20,7 +20,7 @@ const reviewSchema = mongoose.Schema(
   },
 );
 
-const porductSchema = mongoose.Schema(
+const productSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -75,6 +75,6 @@ const porductSchema = mongoose.Schema(
   },
 );
 
-const Product = mongoose.Model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema);
 
 export default Product;
