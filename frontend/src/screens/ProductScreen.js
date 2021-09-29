@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 import Rating from '../components/Rating';
 import { listProductDetails } from '../actions/productActions';
+import Message from '../components/Message';
+import Loader from '../components/Loader';
 
 const ProductScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -21,9 +23,9 @@ const ProductScreen = ({ match }) => {
         Go Back
       </Link>
       {loading ? (
-        <h2>LOADIN</h2>
+        <Loader />
       ) : error ? (
-        <h3>ERROR</h3>
+        <Message variant="danger">{error}</Message>
       ) : (
         <Row>
           {product !== undefined ? (
