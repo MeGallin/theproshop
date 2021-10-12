@@ -59,7 +59,9 @@ const CartScreen = ({ match, location, history }) => {
                     ></Image>
                   </Col>
                   <Col md={3}>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
+                    <Link to={`/product/${item.product}`}>
+                      {item.quantity}-{item.name}
+                    </Link>
                   </Col>
                   <Col md={2}>${item.price}</Col>
                   <Col md={2}>
