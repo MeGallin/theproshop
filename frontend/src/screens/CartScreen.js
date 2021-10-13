@@ -60,7 +60,8 @@ const CartScreen = ({ match, location, history }) => {
                   </Col>
                   <Col md={3}>
                     <Link to={`/product/${item.product}`}>
-                      {item.quantity}-{item.name}
+                      <span className="cartQty">{item.quantity}</span>-
+                      {item.name}
                     </Link>
                   </Col>
                   <Col md={2}>${item.price}</Col>
@@ -102,17 +103,16 @@ const CartScreen = ({ match, location, history }) => {
             <ListGroup.Item>
               <h2>
                 Sub-Total (
-                {cartItems.cartItems.reduce(
-                  (acc, currentItem) => acc + currentItem.quantity,
-                  0,
-                )}
+                {cartItems.cartItems.reduce((acc, currentItem) => {
+                  return acc + Number(currentItem.quantity);
+                }, 0)}
                 ) items
               </h2>
               $
               {cartItems.cartItems
                 .reduce(
                   (acc, currentItem) =>
-                    acc + currentItem.quantity * currentItem.price,
+                    acc + Number(currentItem.quantity) * currentItem.price,
                   0,
                 )
                 .toFixed(2)}
