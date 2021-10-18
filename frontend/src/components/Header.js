@@ -47,6 +47,19 @@ const Header = () => {
                     </Nav.Link>
                   </LinkContainer>
                 )}
+                {userInfo && userInfo.isAdmin ? (
+                  <NavDropdown title="admin" id="adminMenu">
+                    <NavDropdown.Item as={Link} to="/admin/userlist">
+                      Users
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/admin/productlist">
+                      Products
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/admin/orderlist">
+                      Orders
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                ) : null}
               </Nav>
             </div>
           </Navbar.Collapse>
