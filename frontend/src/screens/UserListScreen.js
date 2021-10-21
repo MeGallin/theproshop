@@ -75,6 +75,7 @@ const UserListScreen = ({ history }) => {
                   <Button
                     variant="danger"
                     className="btn btn-sm"
+                    disabled={user.isAdmin}
                     onClick={() => deleteHandler(user._id)}
                   >
                     Delete
