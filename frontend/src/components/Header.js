@@ -12,6 +12,11 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const cart = useSelector((state) => state.cart);
+  const cartItems = cart;
+  const inCart = cartItems.cartItems.map((item) => item.name);
+  const numberOfItemsInCart = cartItems.cartItems.length;
+
   const logoutHandler = () => {
     dispatch(logout());
   };
@@ -34,7 +39,15 @@ const Header = () => {
               <Nav>
                 <LinkContainer to="/cart">
                   <Nav.Link>
-                    <i className="fas fa-shopping-cart"></i>Cart
+                    {numberOfItemsInCart > 0 ? (
+                      <span
+                        className="cartQty"
+                        title={`${numberOfItemsInCart} item in cart ${inCart}`}
+                      >
+                        {numberOfItemsInCart}
+                      </span>
+                    ) : null}
+                    <i className="fas fa-shopping-cart"></i> Cart{' '}
                   </Nav.Link>
                 </LinkContainer>
                 {userInfo ? (
@@ -49,7 +62,7 @@ const Header = () => {
                 ) : (
                   <LinkContainer to="/login">
                     <Nav.Link>
-                      <i className="fas fa-user"></i>Sign In
+                      <i className="fas fa-user"></i> Sign In
                     </Nav.Link>
                   </LinkContainer>
                 )}
