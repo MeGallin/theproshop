@@ -46,6 +46,12 @@ h3 {
   margin: 0 auto;
 }
 
+.product-heading-length {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 /* Hepler classes */
 .border-temp {
   border: green 1px solid;
