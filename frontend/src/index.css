@@ -21,6 +21,31 @@ h3 {
   padding: 0.1rem;
   border-radius: 4px;
 }
+
+/* Carousel styling mods */
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item-active {
+  display: flex;
+}
+.carousel-caption {
+  position: absolute;
+  top: 0;
+}
+.carousel-caption h2 {
+  color: green;
+}
+.carousel img {
+  display: flex;
+  height: 300px;
+  padding: 30px;
+  margin: auto;
+}
+.carousel a {
+  color: lightblue;
+  margin: 0 auto;
+}
+
 /* Hepler classes */
 .border-temp {
   border: green 1px solid;
