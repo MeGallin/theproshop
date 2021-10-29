@@ -24,23 +24,29 @@ const HomeScreen = ({ match }) => {
   return (
     <>
       {!keyword ? <ProductCarousel /> : null}
-      <h1>Latest Products</h1>
+
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          <div className="product-heading-length">
+            <h1>Latest Products </h1>
+            <span>{products.length} products found</span>
+          </div>
           <Row>
-            {products !== undefined && products.length
-              ? products.map((product) => {
-                  return (
-                    <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
-                      <Product product={product} />
-                    </Col>
-                  );
-                })
-              : null}
+            {products !== undefined && products.length ? (
+              products.map((product) => {
+                return (
+                  <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
+                    <Product product={product} />
+                  </Col>
+                );
+              })
+            ) : (
+              <Message variant="danger">Sorry no products found</Message>
+            )}
           </Row>
           <Paginate
             page={page}

@@ -11,6 +11,12 @@ const SearchBox = ({ history }) => {
       history.push('/');
     }
   };
+
+  const handleClearSearch = () => {
+    console.log(keyword);
+    setKeyword('');
+    history.push('/');
+  };
   return (
     <Form onSubmit={submitHandler} className="d-flex">
       <Form.Control
@@ -19,10 +25,31 @@ const SearchBox = ({ history }) => {
         onChange={(e) => setKeyword(e.target.value)}
         placeholder="SEARCH"
         className="mr-sm-2 ml-sm-5"
+        value={keyword}
       ></Form.Control>
-      <Button type="submit" variant="outline-success" className="p-2">
-        Search
-      </Button>
+
+      {keyword ? (
+        <>
+          <Button
+            type="submit"
+            variant="outline-success"
+            className="p-2"
+            disabled={!keyword}
+          >
+            Search
+          </Button>
+
+          <Button
+            type="submit"
+            variant="outline-warning"
+            className="p-2"
+            disabled={!keyword}
+            onClick={() => handleClearSearch()}
+          >
+            Clear
+          </Button>
+        </>
+      ) : null}
     </Form>
   );
 };
