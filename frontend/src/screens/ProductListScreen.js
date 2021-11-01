@@ -10,7 +10,10 @@ import {
   deleteProduct,
   createProduct,
 } from '../actions/productActions';
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
+import {
+  PRODUCT_CREATE_RESET,
+  PRODUCT_DELETE_RESET,
+} from '../constants/productConstants';
 
 const ProductListScreen = ({ history, match }) => {
   const dispatch = useDispatch();
@@ -39,9 +42,12 @@ const ProductListScreen = ({ history, match }) => {
 
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET });
+    dispatch({ type: PRODUCT_DELETE_RESET });
+
     if (!userInfo.isAdmin) {
       history.push('/login');
     }
+
     if (successCreate) {
       history.push(`/admin/product/${createdProduct._id}/edit`);
     } else {
@@ -58,7 +64,7 @@ const ProductListScreen = ({ history, match }) => {
   ]);
 
   const deleteHandler = (userId) => {
-    if (window.confirm('Are you sure')) {
+    if (window.confirm('Are you sure ?')) {
       // Delete products Dispatch method
       dispatch(deleteProduct(userId));
     }
@@ -99,6 +105,7 @@ const ProductListScreen = ({ history, match }) => {
               <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th># In Stock</th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
@@ -110,13 +117,14 @@ const ProductListScreen = ({ history, match }) => {
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
+                  <td>{product.countInStock}</td>
                   <td>{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
                     <LinkContainer to={`/admin/product/${product._id}/edit`}>
                       <Button variant="light" className="btn btn-sm">
-                        EditXX
+                        Edit
                       </Button>
                     </LinkContainer>
 
