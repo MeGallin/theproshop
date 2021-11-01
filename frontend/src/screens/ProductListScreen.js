@@ -116,7 +116,7 @@ const ProductListScreen = ({ history, match }) => {
                   <td>
                     <LinkContainer to={`/admin/product/${product._id}/edit`}>
                       <Button variant="light" className="btn btn-sm">
-                        Edit
+                        EditXX
                       </Button>
                     </LinkContainer>
 

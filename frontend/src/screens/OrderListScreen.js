@@ -37,7 +37,7 @@ const OrderListScreen = ({ history }) => {
               <th>USER</th>
               <th>DATE</th>
               <th>TOTAL</th>
-              <th>PAID</th>
+              <th>PAID ON</th>
               <th>DELIVERED</th>
               <th></th>
             </tr>
@@ -45,13 +45,36 @@ const OrderListScreen = ({ history }) => {
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
-                <td>{order._id}</td>
+                <td>
+                  <div>{order._id}</div>
+                  <div>
+                    {order.orderItems.map((item) => {
+                      return (
+                        <div key={item._id}>
+                          <p>{item.name}</p>
+                          <div className="order-list-thumbnail-size">
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="img-thumbnail"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </td>
                 <td>{order.user && order.user.name}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>£{order.totalPrice}</td>
                 <td>
                   {order.isPaid ? (
-                    order.paidAt.substring(0, 10)
+                    <>
+                      <div className="p-3 mb-2 bg-info text-white">
+                        {order.paidAt.substring(0, 10)}
+                      </div>
+                      <div>{order.paidAt.substring(11, 22)}</div>
+                    </>
                   ) : (
                     <i className="fa fa-times" style={{ color: 'red' }}></i>
                   )}

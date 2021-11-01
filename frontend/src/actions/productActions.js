@@ -33,9 +33,7 @@ export const listProducts =
         `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`,
       );
 
-      setTimeout(() => {
-        dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-      }, 300);
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     } catch (error) {
       dispatch({
         type: PRODUCT_LIST_FAIL,
@@ -107,6 +105,7 @@ export const createProduct = () => async (dispatch, getState) => {
 
     const config = {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
