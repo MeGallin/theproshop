@@ -49,9 +49,8 @@ export const listProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
     const { data } = await axios.get(`/api/products/${id}`);
-    setTimeout(() => {
-      dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
-    }, 300);
+
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
@@ -80,7 +79,6 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
     };
 
     await axios.delete(`/api/products/${id}`, config);
-
     dispatch({ type: PRODUCT_DELETE_SUCCESS });
   } catch (error) {
     dispatch({
