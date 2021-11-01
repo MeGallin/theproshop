@@ -96,6 +96,15 @@ const CartScreen = ({ match, location, history }) => {
             ))}
           </ListGroup>
         )}
+        {cartItems.cartItems.length > 0 ? (
+          <Col md={6}>
+            <Link to="/">
+              <Button types="button" variant="info">
+                Continue shopping
+              </Button>
+            </Link>
+          </Col>
+        ) : null}
       </Col>
       <Col md={4}>
         <Card>
