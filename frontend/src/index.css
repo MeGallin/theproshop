@@ -66,6 +66,10 @@ header .cartQty {
   align-items: center;
   justify-content: space-between;
 }
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+}
 
 /* Hepler classes */
 .border-temp {
