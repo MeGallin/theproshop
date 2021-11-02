@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button, Row, Col } from 'react-bootstrap';
+import { Table, Button, Row, Col, Image } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -77,16 +77,16 @@ const ProductListScreen = ({ history, match }) => {
 
   return (
     <>
-      <Row className="align-items-center">
-        <Col>
+      <div className="wrapper">
+        <div>
           <h1>Products</h1>
-        </Col>
-        <Col className="text-right">
+        </div>
+        <div>
           <Button className="my-3" onClick={createProductHandler}>
             <i className="fas fa-plus" /> Create Product
           </Button>
-        </Col>
-      </Row>
+        </div>
+      </div>
 
       {loadingDelete ? <Loader /> : null}
       {errorDelete ? <Message variant="danger">{errorDelete}</Message> : null}
@@ -104,37 +104,51 @@ const ProductListScreen = ({ history, match }) => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th># In Stock</th>
+                <th>Description</th>
+                <th>Stock</th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
-                <th></th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {products.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
-                  <td>{product.name}</td>
+                  <td>
+                    <Row>
+                      <Col md={2}>
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fluid
+                          rounded
+                        />
+                      </Col>
+                      <Col md={8}>{product.name}</Col>
+                    </Row>
+                  </td>
                   <td>{product.countInStock}</td>
                   <td>{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
-                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                      <Button variant="light" className="btn btn-sm">
-                        Edit
-                      </Button>
-                    </LinkContainer>
+                    <Row>
+                      <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                        <Button variant="dark" className="btn btn-sm">
+                          Edit
+                        </Button>
+                      </LinkContainer>
 
-                    <Button
-                      variant="danger"
-                      className="btn btn-sm"
-                      onClick={() => deleteHandler(product._id)}
-                    >
-                      Delete
-                    </Button>
+                      <Button
+                        variant="danger"
+                        className="btn btn-sm"
+                        onClick={() => deleteHandler(product._id)}
+                      >
+                        Delete
+                      </Button>
+                    </Row>
                   </td>
                 </tr>
               ))}
