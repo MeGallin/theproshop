@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col, Image } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +22,8 @@ const ProductListScreen = ({ history, match }) => {
   const productList = useSelector((state) => state.listProducts);
   const { loading, error, products, page, pages } = productList;
 
+  const [newProducts, setNewProducts] = useState(products);
+
   const productDelete = useSelector((state) => state.productDelete);
   const {
     loading: loadingDelete,
@@ -39,6 +41,49 @@ const ProductListScreen = ({ history, match }) => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  // Search functions
+  const sortByProductStockCountUp = (a, b) => {
+    return parseInt(a.countInStock) - parseInt(b.countInStock);
+  };
+  const sortByProductStockCountDown = (a, b) => {
+    return parseInt(b.countInStock) - parseInt(a.countInStock);
+  };
+  const sortByDescriptionUp = (a, b) => {
+    if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+    else if (a.name.toLowerCase() === b.name.toLowerCase()) return 0;
+    else return -1;
+  };
+  const sortByDescriptionDown = (a, b) => {
+    if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
+    else if (a.name.toLowerCase() === b.name.toLowerCase()) return 0;
+    else return -1;
+  };
+
+  const handleSort = (val) => {
+    const newProducts = [...products];
+    switch (val) {
+      case 'stockUp':
+        products.sort(sortByProductStockCountUp);
+        break;
+      case 'stockDown':
+        products.sort(sortByProductStockCountDown);
+        break;
+      case 'descriptionUp':
+        products.sort(sortByDescriptionUp);
+        break;
+      case 'descriptionDown':
+        products.sort(sortByDescriptionDown);
+        break;
+      default:
+        return;
+    }
+    setNewProducts(newProducts);
+  };
+  useEffect(() => {
+    setNewProducts(newProducts);
+  }, [newProducts]);
+  // END Search functions
 
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET });
@@ -104,8 +149,32 @@ const ProductListScreen = ({ history, match }) => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Description</th>
-                <th>Stock</th>
+                <th>
+                  <div className="wrapper">
+                    <span onClick={() => handleSort('descriptionUp')}>
+                      {' '}
+                      <i className="fas fa-arrow-up" />
+                    </span>
+                    <span> Description </span>
+                    <span onClick={() => handleSort('descriptionDown')}>
+                      {' '}
+                      <i className="fas fa-arrow-down" />
+                    </span>
+                  </div>
+                </th>
+                <th>
+                  <div className="wrapper">
+                    <span onClick={() => handleSort('stockUp')}>
+                      {' '}
+                      <i className="fas fa-arrow-up" />
+                    </span>
+                    <span> Stock </span>
+                    <span onClick={() => handleSort('stockDown')}>
+                      {' '}
+                      <i className="fas fa-arrow-down" />
+                    </span>
+                  </div>
+                </th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
@@ -130,7 +199,7 @@ const ProductListScreen = ({ history, match }) => {
                     </Row>
                   </td>
                   <td>{product.countInStock}</td>
-                  <td>{product.price}</td>
+                  <td>£{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
