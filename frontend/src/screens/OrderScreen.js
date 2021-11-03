@@ -6,18 +6,32 @@ import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getOrderDetails, payOrder } from '../actions/orderActions';
-import { ORDER_PAY_RESET } from '../constants/orderConstants';
+import {
+  getOrderDetails,
+  payOrder,
+  deliverOrder,
+} from '../actions/orderActions';
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVER_RESET,
+} from '../constants/orderConstants';
 
-export const OrderScreen = ({ match }) => {
+export const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id;
   const dispatch = useDispatch();
   const [sdkReady, setSdkReady] = useState(false);
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
+
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
+
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   if (!loading) {
     // Calculate prices
@@ -29,6 +43,9 @@ export const OrderScreen = ({ match }) => {
   }
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/login');
+    }
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get('/api/config/paypal');
       const script = document.createElement('script');
@@ -41,8 +58,9 @@ export const OrderScreen = ({ match }) => {
       document.body.appendChild(script);
     };
 
-    if (!order || order._id !== orderId || successPay) {
+    if (!order || successDeliver || successPay) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -52,11 +70,15 @@ export const OrderScreen = ({ match }) => {
       }
     }
     // eslint-disable-next-line
-  }, [orderId, order, successPay]);
+  }, [orderId, order, successPay, successDeliver]);
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
+  };
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order));
   };
 
   return loading ? (
@@ -131,7 +153,7 @@ export const OrderScreen = ({ match }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.quantity} x ${item.price} = $
+                          {item.quantity} x £{item.price} = £
                           {item.quantity * item.price}
                         </Col>
                       </Row>
@@ -152,28 +174,28 @@ export const OrderScreen = ({ match }) => {
               <ListGroup.Item>
                 <Row>
                   <Col> Items</Col>
-                  <Col>${order.itemsPrice}</Col>
+                  <Col>£{order.itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col> Shipping</Col>
-                  <Col>${order.shippingPrice}</Col>
+                  <Col>£{order.shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col> VAT</Col>
-                  <Col>${order.taxPrice}</Col>
+                  <Col>£{order.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col> Total</Col>
-                  <Col>${order.totalPrice.toFixed(2)}</Col>
+                  <Col>£{order.totalPrice.toFixed(2)}</Col>
                 </Row>
               </ListGroup.Item>
               {!order.isPaid ? (
@@ -189,10 +211,23 @@ export const OrderScreen = ({ match }) => {
                   )}
                 </ListGroup.Item>
               ) : null}
+
+              {loadingDeliver ? <Loader /> : null}
+              {userInfo &&
+              userInfo.isAdmin &&
+              order.isPaid &&
+              !order.isDelivered ? (
+                <ListGroup.Item>
+                  <Button
+                    type="button"
+                    className="btn col-12"
+                    onClick={deliverHandler}
+                  >
+                    Mark as DELIVERED
+                  </Button>
+                </ListGroup.Item>
+              ) : null}
             </ListGroup>
-            <ListGroup.Item>
-              <Button>Is Delivered</Button>
-            </ListGroup.Item>
           </Card>
         </Col>
       </Row>

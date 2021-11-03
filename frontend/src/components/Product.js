@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
 import Rating from './Rating';
+import Message from './Message';
 
 const Product = ({ product }) => {
   return (
@@ -21,7 +22,14 @@ const Product = ({ product }) => {
             text={`${product.numReviews} reviews`}
           />
         </Card.Text>
-        <Card.Text as="h3">${product.price}</Card.Text>
+        <Card.Text as="h3">£{product.price}</Card.Text>
+        {product.countInStock > 0 ? (
+          <Card.Text>{product.countInStock} in stock</Card.Text>
+        ) : (
+          <Message variant="danger">
+            This product is currently out of stock
+          </Message>
+        )}
       </Card.Body>
     </Card>
   );

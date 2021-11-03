@@ -59,12 +59,12 @@ const CartScreen = ({ match, location, history }) => {
                     ></Image>
                   </Col>
                   <Col md={3}>
-                    <Link to={`/product/${item.product}`}>
+                    <Link to={`/product/Card{item.product}`}>
                       <span className="cartQty">{item.quantity}</span>-
                       {item.name}
                     </Link>
                   </Col>
-                  <Col md={2}>${item.price}</Col>
+                  <Col md={2}>£{item.price}</Col>
                   <Col md={2}>
                     <Form.Control
                       as="select"
@@ -96,6 +96,15 @@ const CartScreen = ({ match, location, history }) => {
             ))}
           </ListGroup>
         )}
+        {cartItems.cartItems.length > 0 ? (
+          <Col md={6}>
+            <Link to="/">
+              <Button types="button" variant="info">
+                Continue shopping
+              </Button>
+            </Link>
+          </Col>
+        ) : null}
       </Col>
       <Col md={4}>
         <Card>
@@ -108,7 +117,7 @@ const CartScreen = ({ match, location, history }) => {
                 }, 0)}
                 ) items
               </h2>
-              $
+              £
               {cartItems.cartItems
                 .reduce(
                   (acc, currentItem) =>
