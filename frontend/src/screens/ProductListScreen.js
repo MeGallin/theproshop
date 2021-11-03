@@ -42,32 +42,48 @@ const ProductListScreen = ({ history, match }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const sortByProductNameUp = (a, b) => {
-    console.log(a);
+  // Search functions
+  const sortByProductStockCountUp = (a, b) => {
     return parseInt(a.countInStock) - parseInt(b.countInStock);
-    // if (a.name > b.name) return 1;
-    // else if (a.name === b.name) return 0;
-    // else return -1;
   };
-
-  const sortByProductNameDown = (a, b) => {
-    console.log(a.name);
+  const sortByProductStockCountDown = (a, b) => {
     return parseInt(b.countInStock) - parseInt(a.countInStock);
-    // if (a.name < b.name) return 1;
-    // else if (a.name === b.name) return 0;
-    // else return -1;
+  };
+  const sortByDescriptionUp = (a, b) => {
+    if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+    else if (a.name.toLowerCase() === b.name.toLowerCase()) return 0;
+    else return -1;
+  };
+  const sortByDescriptionDown = (a, b) => {
+    if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
+    else if (a.name.toLowerCase() === b.name.toLowerCase()) return 0;
+    else return -1;
   };
 
   const handleSort = (val) => {
     const newProducts = [...products];
-    if (val === 'up') {
-      newProducts.sort(sortByProductNameUp);
-    }
-    if (val === 'down') {
-      newProducts.sort(sortByProductNameDown);
+    switch (val) {
+      case 'stockUp':
+        products.sort(sortByProductStockCountUp);
+        break;
+      case 'stockDown':
+        products.sort(sortByProductStockCountDown);
+        break;
+      case 'descriptionUp':
+        products.sort(sortByDescriptionUp);
+        break;
+      case 'descriptionDown':
+        products.sort(sortByDescriptionDown);
+        break;
+      default:
+        return;
     }
     setNewProducts(newProducts);
   };
+  useEffect(() => {
+    setNewProducts(newProducts);
+  }, [newProducts]);
+  // END Search functions
 
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET });
@@ -133,15 +149,27 @@ const ProductListScreen = ({ history, match }) => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Description</th>
                 <th>
-                  Stock
                   <div className="wrapper">
-                    <span onClick={() => handleSort('up')}>
+                    <span onClick={() => handleSort('descriptionUp')}>
                       {' '}
                       <i className="fas fa-arrow-up" />
                     </span>
-                    <span onClick={() => handleSort('down')}>
+                    <span> Description </span>
+                    <span onClick={() => handleSort('descriptionDown')}>
+                      {' '}
+                      <i className="fas fa-arrow-down" />
+                    </span>
+                  </div>
+                </th>
+                <th>
+                  <div className="wrapper">
+                    <span onClick={() => handleSort('stockUp')}>
+                      {' '}
+                      <i className="fas fa-arrow-up" />
+                    </span>
+                    <span> Stock </span>
+                    <span onClick={() => handleSort('stockDown')}>
                       {' '}
                       <i className="fas fa-arrow-down" />
                     </span>
@@ -154,7 +182,7 @@ const ProductListScreen = ({ history, match }) => {
               </tr>
             </thead>
             <tbody>
-              {newProducts.map((product) => (
+              {products.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>
@@ -171,7 +199,7 @@ const ProductListScreen = ({ history, match }) => {
                     </Row>
                   </td>
                   <td>{product.countInStock}</td>
-                  <td>{product.price}</td>
+                  <td>£{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
