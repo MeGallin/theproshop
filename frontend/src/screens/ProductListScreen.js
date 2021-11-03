@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col, Image } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +22,8 @@ const ProductListScreen = ({ history, match }) => {
   const productList = useSelector((state) => state.listProducts);
   const { loading, error, products, page, pages } = productList;
 
+  const [newProducts, setNewProducts] = useState(products);
+
   const productDelete = useSelector((state) => state.productDelete);
   const {
     loading: loadingDelete,
@@ -39,6 +41,33 @@ const ProductListScreen = ({ history, match }) => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const sortByProductNameUp = (a, b) => {
+    console.log(a);
+    return parseInt(a.countInStock) - parseInt(b.countInStock);
+    // if (a.name > b.name) return 1;
+    // else if (a.name === b.name) return 0;
+    // else return -1;
+  };
+
+  const sortByProductNameDown = (a, b) => {
+    console.log(a.name);
+    return parseInt(b.countInStock) - parseInt(a.countInStock);
+    // if (a.name < b.name) return 1;
+    // else if (a.name === b.name) return 0;
+    // else return -1;
+  };
+
+  const handleSort = (val) => {
+    const newProducts = [...products];
+    if (val === 'up') {
+      newProducts.sort(sortByProductNameUp);
+    }
+    if (val === 'down') {
+      newProducts.sort(sortByProductNameDown);
+    }
+    setNewProducts(newProducts);
+  };
 
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET });
@@ -105,7 +134,19 @@ const ProductListScreen = ({ history, match }) => {
               <tr>
                 <th>ID</th>
                 <th>Description</th>
-                <th>Stock</th>
+                <th>
+                  Stock
+                  <div className="wrapper">
+                    <span onClick={() => handleSort('up')}>
+                      {' '}
+                      <i className="fas fa-arrow-up" />
+                    </span>
+                    <span onClick={() => handleSort('down')}>
+                      {' '}
+                      <i className="fas fa-arrow-down" />
+                    </span>
+                  </div>
+                </th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
@@ -113,7 +154,7 @@ const ProductListScreen = ({ history, match }) => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {newProducts.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>
