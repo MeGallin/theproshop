@@ -103,7 +103,6 @@ export const productUpdateReducer = (state = { product: [] }, action) => {
       return { ...state, loading: true };
     case PRODUCT_UPDATE_SUCCESS:
       return {
-        ...state,
         loading: false,
         success: true,
         product: action.payload,
