@@ -7,7 +7,7 @@ import { logout } from '../actions/userActions';
 import { Link } from 'react-router-dom';
 import SearchBox from './SearchBox';
 
-const Header = () => {
+export const Header = ({ history }) => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -26,7 +26,7 @@ const Header = () => {
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>ProShop</Navbar.Brand>
+            <Navbar.Brand>May Shop</Navbar.Brand>
           </LinkContainer>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -55,7 +55,7 @@ const Header = () => {
                     <NavDropdown.Item as={Link} to="/profile">
                       Profile
                     </NavDropdown.Item>
-                    <NavDropdown.Item onClick={logoutHandler}>
+                    <NavDropdown.Item as={Link} to="/" onClick={logoutHandler}>
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>
