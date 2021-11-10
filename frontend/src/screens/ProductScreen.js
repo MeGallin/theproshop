@@ -29,6 +29,8 @@ const ProductScreen = ({ history, match }) => {
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
+  console.log(product);
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -91,7 +93,15 @@ const ProductScreen = ({ history, match }) => {
                         text={`${product.numReviews} reviews`}
                       ></Rating>
                     </ListGroup.Item>
-                    <ListGroup.Item>Price: £ {product.price}</ListGroup.Item>
+                    <ListGroup.Item>
+                      Price:
+                      {product.price !== undefined
+                        ? product.price.toLocaleString('en-UK', {
+                            style: 'currency',
+                            currency: 'GBP',
+                          })
+                        : product.price}
+                    </ListGroup.Item>
                     <ListGroup.Item>
                       Description:{product.description}
                     </ListGroup.Item>
@@ -104,7 +114,12 @@ const ProductScreen = ({ history, match }) => {
                         <Row>
                           <Col>Price:</Col>
                           <Col>
-                            <strong>£ {product.price}</strong>
+                            {product.price !== undefined
+                              ? product.price.toLocaleString('en-UK', {
+                                  style: 'currency',
+                                  currency: 'GBP',
+                                })
+                              : product.price}
                           </Col>
                         </Row>
                       </ListGroup.Item>

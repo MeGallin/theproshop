@@ -97,8 +97,18 @@ export const PlaceOrderScreen = ({ history }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.quantity} x £{item.price} = £
-                          {item.quantity * item.price}
+                          {item.quantity} x{' '}
+                          {item.price.toLocaleString('en-UK', {
+                            style: 'currency',
+                            currency: 'GBP',
+                          })}{' '}
+                          ={' '}
+                          {(
+                            Number(item.quantity) * Number(item.price)
+                          ).toLocaleString('en-UK', {
+                            style: 'currency',
+                            currency: 'GBP',
+                          })}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -118,28 +128,48 @@ export const PlaceOrderScreen = ({ history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col> Items</Col>
-                  <Col>£{cart.itemsPrice}</Col>
+                  <Col>
+                    {cart.itemsPrice.toLocaleString('en-UK', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    })}
+                  </Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col> Shipping</Col>
-                  <Col>£{cart.shippingPrice}</Col>
+                  <Col>
+                    {cart.shippingPrice.toLocaleString('en-UK', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    })}
+                  </Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col> VAT</Col>
-                  <Col>£{cart.taxPrice}</Col>
+                  <Col>
+                    {cart.taxPrice.toLocaleString('en-UK', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    })}
+                  </Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col> Total</Col>
-                  <Col>£{cart.totalPrice.toFixed(2)}</Col>
+                  <Col>
+                    {cart.totalPrice.toLocaleString('en-UK', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    })}
+                  </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>

@@ -22,7 +22,12 @@ const Product = ({ product }) => {
             text={`${product.numReviews} reviews`}
           />
         </Card.Text>
-        <Card.Text as="h3">£{product.price}</Card.Text>
+        <Card.Text as="h3">
+          {product.price.toLocaleString('en-UK', {
+            style: 'currency',
+            currency: 'GBP',
+          })}
+        </Card.Text>
         {product.countInStock > 0 ? (
           <Card.Text>{product.countInStock} in stock</Card.Text>
         ) : (
