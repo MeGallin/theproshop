@@ -58,7 +58,7 @@ export const OrderScreen = ({ match, history }) => {
       document.body.appendChild(script);
     };
 
-    if (!order || successDeliver || successPay) {
+    if (!order || order._id !== orderId || successDeliver || successPay) {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
@@ -113,7 +113,7 @@ export const OrderScreen = ({ match, history }) => {
                   Delivered on {order.isDelivered}
                 </Message>
               ) : (
-                <Message variant="danger">Not Deliverd yet</Message>
+                <Message variant="danger">Not Delivered yet</Message>
               )}
             </ListGroup.Item>
 
@@ -153,8 +153,18 @@ export const OrderScreen = ({ match, history }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.quantity} x £{item.price} = £
-                          {item.quantity * item.price}
+                          {Number(item.quantity)} x{' '}
+                          {item.price.toLocaleString('en-UK', {
+                            style: 'currency',
+                            currency: 'GBP',
+                          })}{' '}
+                          = {''}
+                          {(
+                            Number(item.quantity) * Number(item.price)
+                          ).toLocaleString('en-UK', {
+                            style: 'currency',
+                            currency: 'GBP',
+                          })}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -174,28 +184,48 @@ export const OrderScreen = ({ match, history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col> Items</Col>
-                  <Col>£{order.itemsPrice}</Col>
+                  <Col>
+                    {order.itemsPrice.toLocaleString('en-UK', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    })}
+                  </Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col> Shipping</Col>
-                  <Col>£{order.shippingPrice}</Col>
+                  <Col>
+                    {order.shippingPrice.toLocaleString('en-UK', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    })}
+                  </Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col> VAT</Col>
-                  <Col>£{order.taxPrice}</Col>
+                  <Col>
+                    {order.taxPrice.toLocaleString('en-UK', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    })}
+                  </Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col> Total</Col>
-                  <Col>£{order.totalPrice.toFixed(2)}</Col>
+                  <Col>
+                    {order.totalPrice.toLocaleString('en-UK', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    })}
+                  </Col>
                 </Row>
               </ListGroup.Item>
               {!order.isPaid ? (
