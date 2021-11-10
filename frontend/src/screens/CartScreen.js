@@ -64,7 +64,12 @@ const CartScreen = ({ match, location, history }) => {
                       {item.name}
                     </Link>
                   </Col>
-                  <Col md={2}>£{item.price}</Col>
+                  <Col md={2}>
+                    {item.price.toLocaleString('en-UK', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    })}
+                  </Col>
                   <Col md={2}>
                     <Form.Control
                       as="select"
@@ -121,7 +126,8 @@ const CartScreen = ({ match, location, history }) => {
               {cartItems.cartItems
                 .reduce(
                   (acc, currentItem) =>
-                    acc + Number(currentItem.quantity) * currentItem.price,
+                    acc +
+                    Number(currentItem.quantity) * Number(currentItem.price),
                   0,
                 )
                 .toFixed(2)}
