@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Col, Image, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +11,8 @@ const OrderListScreen = ({ history }) => {
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
 
+  const [newOrders, setNewOrders] = useState(orders);
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -21,6 +23,38 @@ const OrderListScreen = ({ history }) => {
       history.push('/login');
     }
   }, [dispatch, history, userInfo]);
+
+  // Start Search functions
+  const sortByNameUp = (a, b) => {
+    if (a.user.name.toLowerCase() > b.user.name.toLowerCase()) return 1;
+    else if (a.user.name.toLowerCase() === b.user.name.toLowerCase()) return 0;
+    else return -1;
+  };
+  const sortByNameDown = (a, b) => {
+    if (a.user.name.toLowerCase() < b.user.name.toLowerCase()) return 1;
+    else if (a.user.name.toLowerCase() === b.user.name.toLowerCase()) return 0;
+    else return -1;
+  };
+
+  const handleSort = (val) => {
+    const newOrders = [...orders];
+    switch (val) {
+      case 'nameUp':
+        orders.sort(sortByNameUp);
+        break;
+      case 'nameDown':
+        orders.sort(sortByNameDown);
+        break;
+
+      default:
+        return;
+    }
+    setNewOrders(newOrders);
+  };
+  useEffect(() => {
+    setNewOrders(newOrders);
+  }, [newOrders]);
+  // END Search functions
 
   return (
     <>
@@ -34,7 +68,19 @@ const OrderListScreen = ({ history }) => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>USER</th>
+              <th>
+                <div className="wrapper">
+                  <span onClick={() => handleSort('nameUp')}>
+                    {' '}
+                    <i className="fas fa-arrow-up arrow-hover" />
+                  </span>
+                  <span> Name </span>
+                  <span onClick={() => handleSort('nameDown')}>
+                    {' '}
+                    <i className="fas fa-arrow-down arrow-hover" />
+                  </span>
+                </div>
+              </th>
               <th>DATE</th>
               <th>TOTAL</th>
               <th>PAID ON</th>
