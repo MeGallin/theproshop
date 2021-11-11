@@ -43,6 +43,12 @@ const ProductListScreen = ({ history, match }) => {
   const { userInfo } = userLogin;
 
   // Search functions
+  const sortByProductPriceUp = (a, b) => {
+    return parseInt(a.price) - parseInt(b.price);
+  };
+  const sortByProductPriceDown = (a, b) => {
+    return parseInt(b.price) - parseInt(a.price);
+  };
   const sortByProductStockCountUp = (a, b) => {
     return parseInt(a.countInStock) - parseInt(b.countInStock);
   };
@@ -63,6 +69,12 @@ const ProductListScreen = ({ history, match }) => {
   const handleSort = (val) => {
     const newProducts = [...products];
     switch (val) {
+      case 'priceUp':
+        products.sort(sortByProductPriceUp);
+        break;
+      case 'priceDown':
+        products.sort(sortByProductPriceDown);
+        break;
       case 'stockUp':
         products.sort(sortByProductStockCountUp);
         break;
@@ -153,12 +165,12 @@ const ProductListScreen = ({ history, match }) => {
                   <div className="wrapper">
                     <span onClick={() => handleSort('descriptionUp')}>
                       {' '}
-                      <i className="fas fa-arrow-up" />
+                      <i className="fas fa-arrow-up arrow-hover" />
                     </span>
                     <span> Description </span>
                     <span onClick={() => handleSort('descriptionDown')}>
                       {' '}
-                      <i className="fas fa-arrow-down" />
+                      <i className="fas fa-arrow-down arrow-hover" />
                     </span>
                   </div>
                 </th>
@@ -166,16 +178,28 @@ const ProductListScreen = ({ history, match }) => {
                   <div className="wrapper">
                     <span onClick={() => handleSort('stockUp')}>
                       {' '}
-                      <i className="fas fa-arrow-up" />
+                      <i className="fas fa-arrow-up arrow-hover" />
                     </span>
                     <span> Stock </span>
                     <span onClick={() => handleSort('stockDown')}>
                       {' '}
-                      <i className="fas fa-arrow-down" />
+                      <i className="fas fa-arrow-down arrow-hover" />
                     </span>
                   </div>
                 </th>
-                <th>PRICE</th>
+                <th>
+                  <div className="wrapper">
+                    <span onClick={() => handleSort('priceUp')}>
+                      {' '}
+                      <i className="fas fa-arrow-up arrow-hover" />
+                    </span>
+                    <span> PRICE </span>
+                    <span onClick={() => handleSort('priceDown')}>
+                      {' '}
+                      <i className="fas fa-arrow-down arrow-hover" />
+                    </span>
+                  </div>
+                </th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
                 <th>Action</th>
@@ -199,7 +223,12 @@ const ProductListScreen = ({ history, match }) => {
                     </Row>
                   </td>
                   <td>{product.countInStock}</td>
-                  <td>£{product.price}</td>
+                  <td>
+                    {product.price.toLocaleString('en-UK', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    })}
+                  </td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>

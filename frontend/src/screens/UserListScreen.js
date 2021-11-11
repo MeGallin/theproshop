@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,8 @@ const UserListScreen = ({ history }) => {
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
+
+  const [newUsers, setNewUsers] = useState(users);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -31,6 +33,38 @@ const UserListScreen = ({ history }) => {
     }
   };
 
+  // Start Search functions
+  const sortByNameUp = (a, b) => {
+    if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+    else if (a.name.toLowerCase() === b.name.toLowerCase()) return 0;
+    else return -1;
+  };
+  const sortByNameDown = (a, b) => {
+    if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
+    else if (a.name.toLowerCase() === b.name.toLowerCase()) return 0;
+    else return -1;
+  };
+
+  const handleSort = (val) => {
+    const newUsers = [...users];
+    switch (val) {
+      case 'nameUp':
+        users.sort(sortByNameUp);
+        break;
+      case 'nameDown':
+        users.sort(sortByNameDown);
+        break;
+
+      default:
+        return;
+    }
+    setNewUsers(newUsers);
+  };
+  useEffect(() => {
+    setNewUsers(newUsers);
+  }, [newUsers]);
+  // END Search functions
+
   return (
     <>
       <h1>Users</h1>
@@ -42,8 +76,20 @@ const UserListScreen = ({ history }) => {
         <Table striped bordered hover responsive className="table-sm">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Name</th>
+              <th>Client ID</th>
+              <th>
+                <div className="wrapper">
+                  <span onClick={() => handleSort('nameUp')}>
+                    {' '}
+                    <i className="fas fa-arrow-up arrow-hover" />
+                  </span>
+                  <span> Name </span>
+                  <span onClick={() => handleSort('nameDown')}>
+                    {' '}
+                    <i className="fas fa-arrow-down arrow-hover" />
+                  </span>
+                </div>
+              </th>
               <th>Email</th>
               <th>Is ADMIN</th>
               <th></th>

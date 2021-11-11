@@ -33,6 +33,7 @@ const ProductEditScreen = ({ match, history }) => {
   } = productUpdate;
 
   useEffect(() => {
+    console.log('fired');
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       dispatch(listProductDetails(match.params.id));
