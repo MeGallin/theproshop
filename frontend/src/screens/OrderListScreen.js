@@ -36,6 +36,27 @@ const OrderListScreen = ({ history }) => {
     else return -1;
   };
 
+  const sortByTotalUp = (a, b) => {
+    return parseInt(a.totalPrice) - parseInt(b.totalPrice);
+  };
+  const sortByTotalDown = (a, b) => {
+    return parseInt(b.totalPrice) - parseInt(a.totalPrice);
+  };
+
+  const sortByPaidOnUp = (a, b) => {
+    return new Date(a.paidAt) - new Date(b.paidAt);
+  };
+  const sortByPaidOnDown = (a, b) => {
+    return new Date(b.paidAt) - new Date(a.paidAt);
+  };
+
+  const deliveredOnUp = (a, b) => {
+    return new Date(a.deliveredAt) - new Date(b.deliveredAt);
+  };
+  const deliveredOnDown = (a, b) => {
+    return new Date(b.deliveredAt) - new Date(a.deliveredAt);
+  };
+
   const handleSort = (val) => {
     const newOrders = [...orders];
     switch (val) {
@@ -45,7 +66,24 @@ const OrderListScreen = ({ history }) => {
       case 'nameDown':
         orders.sort(sortByNameDown);
         break;
-
+      case 'totalUp':
+        orders.sort(sortByTotalUp);
+        break;
+      case 'totalDown':
+        orders.sort(sortByTotalDown);
+        break;
+      case 'paidOnUp':
+        orders.sort(sortByPaidOnUp);
+        break;
+      case 'paidOnDown':
+        orders.sort(sortByPaidOnDown);
+        break;
+      case 'deliveredOnUp':
+        orders.sort(deliveredOnUp);
+        break;
+      case 'deliveredOnDown':
+        orders.sort(deliveredOnDown);
+        break;
       default:
         return;
     }
@@ -81,10 +119,46 @@ const OrderListScreen = ({ history }) => {
                   </span>
                 </div>
               </th>
-              <th>DATE</th>
-              <th>TOTAL</th>
-              <th>PAID ON</th>
-              <th>DELIVERED</th>
+              <th>CREATED</th>
+              <th>
+                <div className="wrapper">
+                  <span onClick={() => handleSort('totalUp')}>
+                    {' '}
+                    <i className="fas fa-arrow-up arrow-hover" />
+                  </span>
+                  <span> TOTAL </span>
+                  <span onClick={() => handleSort('totalDown')}>
+                    {' '}
+                    <i className="fas fa-arrow-down arrow-hover" />
+                  </span>
+                </div>
+              </th>
+              <th>
+                <div className="wrapper">
+                  <span onClick={() => handleSort('paidOnUp')}>
+                    {' '}
+                    <i className="fas fa-arrow-up arrow-hover" />
+                  </span>
+                  <span>PAID</span>
+                  <span onClick={() => handleSort('paidOnDown')}>
+                    {' '}
+                    <i className="fas fa-arrow-down arrow-hover" />
+                  </span>
+                </div>
+              </th>
+              <th>
+                <div className="wrapper">
+                  <span onClick={() => handleSort('deliveredOnUp')}>
+                    {' '}
+                    <i className="fas fa-arrow-up arrow-hover" />
+                  </span>
+                  <span>DELIVERED</span>
+                  <span onClick={() => handleSort('deliveredOnDown')}>
+                    {' '}
+                    <i className="fas fa-arrow-down arrow-hover" />
+                  </span>
+                </div>
+              </th>
               <th></th>
             </tr>
           </thead>
@@ -112,30 +186,46 @@ const OrderListScreen = ({ history }) => {
                   </div>
                 </td>
                 <td>{order.user && order.user.name}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
+                <td style={{ fontSize: '0.6em' }}>
+                  {order.createdAt.substring(0, 10)}
+                </td>
                 <td>
                   {order.totalPrice.toLocaleString('en-UK', {
                     style: 'currency',
                     currency: 'GBP',
                   })}
                 </td>
-                <td>
+                <td style={{ fontSize: '0.6em' }}>
                   {order.isPaid ? (
                     <>
-                      <div className="p-3 mb-2 bg-info text-white">
-                        {order.paidAt.substring(0, 10)}
+                      <i className="fa fa-check" style={{ color: 'green' }}></i>
+                      <div className="p-1 bg-info text-white">
+                        <div>{order.paidAt.substring(0, 10)}</div>
+                        <div>{order.paidAt.substring(11, 22)}</div>
                       </div>
-                      <div>{order.paidAt.substring(11, 22)}</div>
                     </>
                   ) : (
-                    <i className="fa fa-times" style={{ color: 'red' }}></i>
+                    <>
+                      <i className="fa fa-times" style={{ color: 'red' }}></i>
+                      <div className="p-3 bg-warning text-white">Not Paid</div>
+                    </>
                   )}
                 </td>
-                <td>
+                <td style={{ fontSize: '0.6em' }}>
                   {order.isDelivered ? (
-                    order.deliveredAt.substring(0, 10)
+                    <>
+                      <i className="fa fa-check" style={{ color: 'green' }}></i>
+                      <div className="p-3 bg-info text-white">
+                        {order.deliveredAt.substring(0, 10)}
+                      </div>
+                    </>
                   ) : (
-                    <i className="fa fa-times" style={{ color: 'red' }}></i>
+                    <>
+                      <i className="fa fa-times" style={{ color: 'red' }}></i>
+                      <div className="p-3 bg-warning text-white">
+                        Not Delivered
+                      </div>
+                    </>
                   )}
                 </td>
                 <td>
@@ -146,7 +236,7 @@ const OrderListScreen = ({ history }) => {
                   </LinkContainer> */}
 
                   <LinkContainer to={`/order/${order._id}`}>
-                    <Button variant="danger" className="btn btn-sm">
+                    <Button variant="primary" className="btn btn-sm">
                       Details
                     </Button>
                   </LinkContainer>
