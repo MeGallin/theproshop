@@ -70,12 +70,12 @@ const registerUser = asyncHandler(async (req, res) => {
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-      host: 'mail.trilogywebsolutions.co.uk',
+      host: process.env.MAILER_HOST,
       port: 587,
       secure: false, // true for 465, false for other ports
       auth: {
-        user: 'info@trilogywebsolutions.co.uk',
-        pass: 'mayshop123456',
+        user: process.env.MAILER_USER,
+        pass: process.env.MAILER_PW,
       },
       tls: {
         rejectUnauthorized: false,
