@@ -1,7 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
 import nodemailer from 'nodemailer';
-import User from '../models/userModel.js';
 
 // @description: Creat new order
 // @route: GET /api/orders
@@ -61,7 +60,6 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @access: Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
-  const user = await User.findById(req.params.id);
 
   if (order) {
     order.isPaid = true;

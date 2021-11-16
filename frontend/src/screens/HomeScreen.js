@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import Product from '../components/Product';
 import { listProducts } from '../actions/productActions';
 import Message from '../components/Message';
@@ -21,6 +21,15 @@ const HomeScreen = ({ match }) => {
   const productList = useSelector((state) => state.listProducts);
   const { loading, error, products, page, pages } = productList;
 
+  // Function to calculate DISPLAYED number of listed products
+  const productCount = () => {
+    const foo = products.filter((product) => {
+      return product.isDelayed;
+    });
+    return Number(products.length) - Number(foo.length);
+  };
+  // Function to calculate DISPLAYED number of listed products
+
   return (
     <>
       {!keyword ? <ProductCarousel /> : null}
@@ -33,21 +42,21 @@ const HomeScreen = ({ match }) => {
         <>
           <div className="product-heading-length">
             <h1>Latest Products </h1>
-            <span>{products.length} products found</span>
+            <span>{productCount()} product(s) listed</span>
           </div>
-          <Row>
+          <div className="wrapper">
             {products !== undefined && products.length ? (
               products.map((product) => {
-                return (
+                return !product.isDelayed ? (
                   <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
                     <Product product={product} />
                   </Col>
-                );
+                ) : null;
               })
             ) : (
               <Message variant="danger">Sorry no products found</Message>
             )}
-          </Row>
+          </div>
           <Paginate
             page={page}
             pages={pages}

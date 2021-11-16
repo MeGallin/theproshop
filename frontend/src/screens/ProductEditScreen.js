@@ -19,6 +19,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [isDelayed, setIsDelayed] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -33,7 +34,6 @@ const ProductEditScreen = ({ match, history }) => {
   } = productUpdate;
 
   useEffect(() => {
-    console.log('fired');
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       dispatch(listProductDetails(match.params.id));
@@ -50,6 +50,7 @@ const ProductEditScreen = ({ match, history }) => {
       setCategory(product.category);
       setCountInStock(product.countInStock);
       setDescription(product.description);
+      setIsDelayed(product.isDelayed);
     }
   }, [dispatch, product, productId, history, match, successUpdate]);
 
@@ -66,6 +67,7 @@ const ProductEditScreen = ({ match, history }) => {
         category,
         description,
         countInStock,
+        isDelayed,
       }),
     );
   };
@@ -176,6 +178,15 @@ const ProductEditScreen = ({ match, history }) => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="isDelayed">
+              <Form.Check
+                type="checkbox"
+                label="Is Delayed"
+                checked={isDelayed}
+                onChange={(e) => setIsDelayed(e.target.checked)}
+              ></Form.Check>
             </Form.Group>
 
             <Button type="submit" variant="primary">
