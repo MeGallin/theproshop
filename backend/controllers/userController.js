@@ -87,7 +87,7 @@ const registerUser = asyncHandler(async (req, res) => {
       from: '"Info May Shop" <info@trilogywebsolutions.co.uk>', // sender address
       to: `${user.email}, me@garyallin.uk`, // list of receivers
       subject: 'MayShop Registration', // Subject line
-      text: 'Hello world?', // plain text body
+      text: 'MayShop Registration', // plain text body
       html: `
     <h1>Hi ${user.name}</h1>
     <p>You are successfully registered with MayShop</p>    

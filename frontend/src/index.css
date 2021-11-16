@@ -68,8 +68,13 @@ header .cartQty {
 }
 .wrapper {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
+.wrapper > div {
+  border: transparent 0.4em solid;
+}
+
 .arrow-hover {
   opacity: 0.6;
   padding: 0 0.4em;

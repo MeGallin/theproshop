@@ -6,7 +6,7 @@ import Product from '../models/productModel.js';
 // @access: Public
 const getProducts = asyncHandler(async (req, res) => {
   // pagination
-  const pageSize = 10;
+  const pageSize = 12;
   const page = Number(req.query.pageNumber) || 1;
 
   const keyword = req.query.keyword
@@ -67,6 +67,7 @@ const createProduct = asyncHandler(async (req, res) => {
     countInStock: 0,
     numReviews: 0,
     description: 'Sample Description',
+    isDelayed: false,
   });
 
   const createProduct = await product.save();
@@ -77,8 +78,16 @@ const createProduct = asyncHandler(async (req, res) => {
 // @route: PUT /api/products/:id
 // @access: Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, price, image, brand, category, description, countInStock } =
-    req.body;
+  const {
+    name,
+    price,
+    image,
+    brand,
+    category,
+    description,
+    countInStock,
+    isDelayed,
+  } = req.body;
 
   const product = await Product.findById(req.params.id);
 
@@ -90,6 +99,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.category = category;
     product.description = description;
     product.countInStock = countInStock;
+    product.isDelayed = isDelayed;
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);
