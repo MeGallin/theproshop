@@ -21,6 +21,8 @@ const HomeScreen = ({ match }) => {
   const productList = useSelector((state) => state.listProducts);
   const { loading, error, products, page, pages } = productList;
 
+  console.log(products);
+
   // Function to calculate DISPLAYED number of listed products
   const productCount = () => {
     const foo = products.filter((product) => {
