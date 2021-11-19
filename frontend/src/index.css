@@ -73,11 +73,9 @@ footer .carousel-control-next-icon {
   background-color: black;
 }
 footer .carousel img {
-  position: relative;
-  left: 10%;
   height: 160px;
   width: auto;
-  padding: 30px;
+  padding: 15px;
 }
 footer .carousel-caption {
   /* display: flex; */
@@ -97,6 +95,17 @@ footer .carousel-caption {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+.wrapper-review {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.img-match-padding {
+  padding: 15px;
 }
 .wrapper > div {
   border: transparent 0.4em solid;
