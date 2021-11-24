@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col, Image } from 'react-bootstrap';
+import Badge from 'react-bootstrap/Badge';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -219,7 +220,16 @@ const ProductListScreen = ({ history, match }) => {
                           rounded
                         />
                       </Col>
-                      <Col md={8}>{product.name}</Col>
+                      <Col md={7}>{product.name}</Col>
+                      <Col md={1}>
+                        {product.isDelayed ? (
+                          <div>
+                            <Badge className="badge bg-warning text-dark">
+                              Delayed <i className="fas fa-check-circle"></i>
+                            </Badge>
+                          </div>
+                        ) : null}
+                      </Col>
                     </Row>
                   </td>
                   <td>{product.countInStock}</td>
