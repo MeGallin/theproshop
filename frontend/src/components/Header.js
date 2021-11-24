@@ -37,6 +37,11 @@ export const Header = ({ history }) => {
 
             <div className="ms-auto">
               <Nav>
+                <LinkContainer to="/contact">
+                  <Nav.Link>
+                    <i className="fa fa-id-badge"></i> Contact Us{' '}
+                  </Nav.Link>
+                </LinkContainer>
                 <LinkContainer to="/cart">
                   <Nav.Link>
                     {numberOfItemsInCart > 0 ? (
@@ -50,6 +55,7 @@ export const Header = ({ history }) => {
                     <i className="fas fa-shopping-cart"></i> Cart{' '}
                   </Nav.Link>
                 </LinkContainer>
+
                 {userInfo ? (
                   <NavDropdown title={userInfo.name} id="username">
                     <NavDropdown.Item as={Link} to="/profile">
