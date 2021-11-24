@@ -28,8 +28,10 @@ import {
   orderListMyReducer,
   orderListReducer,
 } from './reducers/orderReducers';
+import { contactFormReducer } from './reducers/formReducers';
 
 const reducer = combineReducers({
+  contactForm: contactFormReducer,
   listProducts: productListReducer,
   productDetails: productDetailsReducer,
   productDelete: productDeleteReducer,
