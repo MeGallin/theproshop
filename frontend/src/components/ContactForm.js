@@ -31,7 +31,7 @@ const ContactForm = () => {
 
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <h1>Contact Us</h1>
       {error ? <Message variant="danger">{error}</Message> : null}
       {loading ? <Loader></Loader> : null}
       {success ? <Message variant="success">{payload.message}</Message> : null}
@@ -64,8 +64,12 @@ const ContactForm = () => {
           />
         </Form.Group>
 
-        <Button type="submit" variant="primary">
-          Register
+        <Button
+          type="submit"
+          variant="primary"
+          disabled={!name || !email || !message}
+        >
+          Submit
         </Button>
       </Form>
     </FormContainer>
