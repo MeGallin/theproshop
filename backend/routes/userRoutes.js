@@ -9,6 +9,8 @@ import {
   updateUser,
   getUserById,
 } from '../controllers/userController.js';
+import { updateConfirmEmail } from '../controllers/confirmEmailController.js';
+
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -23,5 +25,6 @@ router
   .delete(protect, admin, deleteUser)
   .get(protect, admin, getUserById)
   .put(protect, admin, updateUser);
+router.route('/verify/:id').get(updateConfirmEmail);
 
 export default router;

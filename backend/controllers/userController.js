@@ -82,6 +82,8 @@ const registerUser = asyncHandler(async (req, res) => {
       },
     });
 
+    const link = `http://localhost:5000/verify/id=${generateToken(user._id)}`;
+
     // send mail with defined transport object
     let info = await transporter.sendMail({
       from: '"Info May Shop" <info@trilogywebsolutions.co.uk>', // sender address
@@ -90,7 +92,12 @@ const registerUser = asyncHandler(async (req, res) => {
       text: 'MayShop Registration', // plain text body
       html: `
     <h1>Hi ${user.name}</h1>
-    <p>You are successfully registered with MayShop</p>    
+    <p>You are successfully registered with MayShop</p>
+    <p>Please Click on the link to verify your email.
+    <br>
+    <a href=${link}>Click here to verify</a>
+    </p>
+     
     `, // html body
     });
 
