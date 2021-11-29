@@ -174,7 +174,7 @@ const ProductEditScreen = ({ match, history }) => {
             <Form.Group controlId="description">
               <Form.Label>Description</Form.Label>
               <Form.Control
-                type="text"
+                as="textarea"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
