@@ -22,8 +22,6 @@ const RegistrationScreen = ({ location, history }) => {
   const redirect = location.search ? location.search.split('=')[1] : '/';
 
   useEffect(() => {
-    console.log('userInfo =>', userInfo);
-
     if (userInfo && userInfo !== undefined) {
       history.push(redirect);
     }

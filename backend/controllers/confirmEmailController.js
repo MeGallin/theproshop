@@ -1,18 +1,26 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
+import jwt from 'jsonwebtoken';
 
 // @description: UPdate User Profile
-// @route: GET /api/verify:token
+// @route: GET /api/verify/id
 // @access: public
 const updateConfirmEmail = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-  console.log('GGG', user);
+  // const token = req.params.id;
+  const decodedToken = jwt.verify(
+    req.params.id,
+    process.env.JWT_SECRET,
+    function (err, decoded) {
+      return decoded.id;
+    },
+  );
+
+  const user = await User.findById(decodedToken);
 
   if (user) {
-    console.log('AAAA', user);
     user.isConfirmed = true;
     await user.save();
-    return res.status(200).send({ message: 'Account Varified' });
+    return res.status(200).send({ message: 'Account Verified' });
   } else {
     res.status(404);
     throw new Error('No user found');

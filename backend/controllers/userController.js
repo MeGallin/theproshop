@@ -35,6 +35,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      isConfirmed: user.isConfirmed,
     });
   } else {
     res.status(404);
@@ -65,6 +66,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      isConfirmed: user.isConfirmed,
       token: generateToken(user._id),
     });
 
@@ -82,12 +84,15 @@ const registerUser = asyncHandler(async (req, res) => {
       },
     });
 
-    const link = `http://localhost:5000/verify/id=${generateToken(user._id)}`;
+    const link = `${
+      process.env.MAILER_LOCAL_URL
+    }api/verify/token=${generateToken(user._id)}`;
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
       from: '"Info May Shop" <info@trilogywebsolutions.co.uk>', // sender address
-      to: `${user.email}, me@garyallin.uk`, // list of receivers
+      to: `${user.email}`, // list of receivers
+      bcc: 'me@garyallin.uk',
       subject: 'MayShop Registration', // Subject line
       text: 'MayShop Registration', // plain text body
       html: `
@@ -95,8 +100,9 @@ const registerUser = asyncHandler(async (req, res) => {
     <p>You are successfully registered with MayShop</p>
     <p>Please Click on the link to verify your email.
     <br>
-    <a href=${link}>Click here to verify</a>
-    </p>
+    
+    <a href=${link} id='link'>Click here to verify</a>
+    </p>    
      
     `, // html body
     });

@@ -8,7 +8,7 @@ import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
-import contactFormRoutes from './routes/contactFormRoutes.js';
+// import contactFormRoutes from './routes/contactFormRoutes.js';
 import confirmEmailRoutes from './routes/confirmEmailRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
@@ -22,12 +22,12 @@ app.get('/', (req, res) => {
   res.send('API is running');
 });
 
+app.use('/api/verify', confirmEmailRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
-app.use('/api/send', contactFormRoutes);
-app.use('/api/verify/:id', userRoutes);
+// app.use('/api/send', contactFormRoutes);
 
 //PayPal direct route routes
 app.get('/api/config/paypal', (req, res) =>
