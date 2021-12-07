@@ -9,6 +9,7 @@ import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import confirmEmailRoutes from './routes/confirmEmailRoutes.js';
+import contactFormRoutes from './routes/contactFormRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
@@ -26,6 +27,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/send', contactFormRoutes);
 
 //PayPal direct route routes
 app.get('/api/config/paypal', (req, res) =>
