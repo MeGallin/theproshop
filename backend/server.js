@@ -18,10 +18,6 @@ const app = express();
 app.use(cors());
 app.use(express.json()); // This needed to accept json data
 
-app.get('/', (req, res) => {
-  res.send('API is running');
-});
-
 app.use('/api/verify', confirmEmailRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);

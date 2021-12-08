@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Button, InputGroup, FormControl } from 'react-bootstrap';
 
 const SearchBox = ({ history }) => {
   const [keyword, setKeyword] = useState('');
+
   const submitHandler = (e) => {
     e.preventDefault();
+    setKeyword(e.target.value.toLowerCase());
+
     if (keyword.trim()) {
       history.push(`/search/${keyword}`);
     } else {
@@ -13,32 +16,27 @@ const SearchBox = ({ history }) => {
   };
 
   const handleClearSearch = () => {
-    console.log(keyword);
     setKeyword('');
     history.push('/');
   };
+
   return (
-    <Form onSubmit={submitHandler} className="d-flex">
-      <Form.Control
-        type="text"
-        name="q"
-        onChange={(e) => setKeyword(e.target.value)}
-        placeholder="SEARCH"
-        className="mr-sm-2 ml-sm-5"
-        value={keyword}
-      ></Form.Control>
+    <div className="d-flex flex-row ">
+      <InputGroup>
+        <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+        <FormControl
+          type="text"
+          name="q"
+          onChange={submitHandler}
+          placeholder="SEARCH"
+          aria-label="SEARCH"
+          aria-describedby="basic-addon1"
+          value={keyword}
+        />
+      </InputGroup>
 
       {keyword ? (
         <>
-          <Button
-            type="submit"
-            variant="outline-success"
-            className="p-2"
-            disabled={!keyword}
-          >
-            Search
-          </Button>
-
           <Button
             type="submit"
             variant="outline-warning"
@@ -50,7 +48,7 @@ const SearchBox = ({ history }) => {
           </Button>
         </>
       ) : null}
-    </Form>
+    </div>
   );
 };
 
